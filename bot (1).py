@@ -26,9 +26,6 @@ logging.basicConfig(
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
-
-# ... остальной код без изменений ...
-
 # Хранение статистики пользователей
 user_stats = defaultdict(lambda: {'first_name': '', 'username': '', 'interactions': 0, 'last_interaction': None})
 
@@ -37,7 +34,7 @@ Q1, Q2, Q3, Q4, Q5 = range(5)
 ASCENDANT_TEST = 5
 MAIN_MENU = 6  # Добавляем состояние главного меню
 
-# Базовые категории ароматов (шаблон для сброса)
+# Базовые категории ароматов
 BASE_CATEGORIES = {
     "Цитрусовые": 0,
     "Цветочные": 0,
@@ -363,7 +360,7 @@ async def ascendant_test_handler(update: Update, context: CallbackContext) -> in
     if not await check_subscription_during_test(update, context):
         return ASCENDANT_TEST
     
-    # Кнопки знаков зодиака в 2 столбца
+    # Кнопки знаков 
     zodiac_buttons = [
         [InlineKeyboardButton("овен♈️", callback_data="asc_овен♈️"), InlineKeyboardButton("телец♉️", callback_data="asc_телец♉️")],
         [InlineKeyboardButton("близнецы♊️", callback_data="asc_близнецы♊️"), InlineKeyboardButton("рак♋️", callback_data="asc_рак♋️")],
@@ -701,7 +698,7 @@ async def export_stats_command(update: Update, context: CallbackContext) -> None
                 'last_interaction': data['last_interaction'].strftime("%Y-%m-%d %H:%M:%S") if data['last_interaction'] else ''
             })
     
-    # Отправляем файл администратору
+    # Отправляем файл администратору по кнопке
     with open(filename, 'rb') as file:
         await context.bot.send_document(
             chat_id=ADMIN_ID,
@@ -709,7 +706,7 @@ async def export_stats_command(update: Update, context: CallbackContext) -> None
             caption="📊 Экспорт статистики пользователей"
         )
     
-    # Удаляем временный файл
+    # Удаляем временный файл 
     os.remove(filename)
 
 async def error_handler(update: Update, context: CallbackContext) -> None:
